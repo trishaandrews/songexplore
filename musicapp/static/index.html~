@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block body %}
+<!--<h1>jQuery Example</h1>
+<p>
+  <input type="text" size="5" name="a"> +
+  <input type="text" size="5" name="b"> =
+  <span id="result">?</span>
+<p><a href=# id="calculate">calculate server side</a>-->
+<!--<script type="text/javascript">
+    $(function() {
+        $( "#function_name" ).autocomplete({
+            source: '{{url_for("autocomplete")}}',
+            minLength: 2,
+        });
+    });
+</script>
+
+<form id="function_search_form" method="post" action="">
+    {{form.function_name}}
+</form>
+
+$(document).ready(function() {
+    $.ajax({
+        url: '{{ url_for("autocomplete") }}'
+    }).done(function (data) {
+        $('#function_name').autocomplete({
+            source: data,
+            minLength: 2
+        });
+    });
+}-->
+<h1>Autofill</h1>
+<input type="text" id="auto"/>
+<script type = "text/javascript">
+    $(document).ready(function(){
+    $("#auto").autocomplete({
+      source: "{{url_for('autocomplete')}}",
+      minLength: 1
+     });
+    });
+</script>
+{% endblock %}
+
