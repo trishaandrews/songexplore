@@ -10,10 +10,10 @@
   url_for('static', filename='jquery-1.11.3.min.js') }}">\x3C/script>')
 </script>-->
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
-<script type="text/javascript" src="../static/recommendations.js" ></script>
 <script type="text/javascript">
   var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
 </script>
+<script type="text/javascript" src="{{ url_for('static', filename='recommendations.js')}}" ></script>
 
 <!--"{{ url_for('static', filename='recommendations.js') }}"-->
 {% block body %}{% endblock %}
