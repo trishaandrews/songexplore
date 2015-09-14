@@ -1,15 +1,16 @@
 {% extends "layout.html" %}
 {% block body %}
+<div class="allbox">
 <div style="text-align: center;">
- <h1>Song Explorer!</h1>
- <br>
- <h2>Explore new songs that feel like the songs you know</h2>
- <p>Choose up to 10 songs to get recommendations<br>Start typing an artist or song title and the top 10 options will appear</p>
+  <h1>Song Explore!</h1>
+  <br>
+  <h2>Explore new songs that feel like the songs you know</h2>
+  <p>Choose up to 10 songs to get recommendations<br>Start typing an artist or song title and the top 10 options will appear</p>
 </div>
 <div id="menu-container"> 
  {{ form.autocomp }}
- <a href="#"><button class="more-recs" id="refresh">More</button></a>
- <a href="{{ url_for('index') }}"><button class="more-recs" id="restart">Start over</button></a>
+  <a href="#"><button class="more-recs" id="refresh">More</button></a>
+  <a href="{{ url_for('index') }}"><button class="more-recs" id="restart">Start over</button></a>
 </div>
 <div id="boxbox">
   <div class="box" id="outputbox">
@@ -19,4 +20,11 @@
     <p id="reccontent">No recommendations yet</p>
   </div> 
 </div>
+</div>
+
+<footer style="font-size: 0.8em">
+  <p><a href="{{ url_for('about') }}">
+  About</a></p>
+</footer>
+
 {% endblock %}

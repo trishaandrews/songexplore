@@ -1,9 +1,10 @@
 $(document).ready(function() {
   var selected_labels = [];
+  var selected_clusters = {"clusters":[]};
   NoResults = "No Results"; //TODO No Results message for empty autocomplete
   $('#autocomplete').autocomplete({
     source: function (request, response) {
-        $.getJSON('../autocomplete',{ //'{{ url_for("autocomplete") }}',{
+        $.getJSON('./autocomplete',{ //'{{ url_for("autocomplete") }}',{
             search: request
             }, response);
         },
@@ -11,10 +12,11 @@ $(document).ready(function() {
   });
   $("#autocomplete").on("autocompleteselect", function(event, ui) {
     selected_labels.push(ui.item.value);
+    selected_clusters["clusters"].push(ui.item.cluster);
     console.log(ui.item.cluster)
     $.ajax({
-        url: '../add_entry', //'{{ url_for("add_entry") }}',
-        data: ui.item,
+        url: './add_entry', //'{{ url_for("add_entry") }}',
+        data: selected_clusters,//JSON.stringify(selected_clusters),//JSON.parse(selected_clusters),//ui.item,
         type: 'POST',
         success: function (data) {
             json_data = JSON.parse(data);
@@ -45,18 +47,19 @@ $(document).ready(function() {
             words += "</ul>";
         return words;
     }
-   $('#refresh').on('click', function (event, ui) {
+   $('#refresh').on('click', function (event) {
         $.ajax({
-            url: '../refresh_recs', //'{{ url_for("refresh_recs") }}',
+            url: './refresh_recs', //'{{ url_for("refresh_recs") }}',
+            data: selected_clusters,
             success: function (data) {
                 json_data = JSON.parse(data);
-                console.log(data)
+                //console.log(data)
                 recs = "Recommendations:<br> <ul>";
                 recs = box_content(json_data, recs);
                 $('#reccontent').html(recs);
             },
             error: function (error) {
-                 console.log("error! "+error) ;
+                 console.log("error! "+error);
               }
         });
    });
