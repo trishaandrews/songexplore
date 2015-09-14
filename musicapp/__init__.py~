@@ -2,6 +2,7 @@ from flask import Flask, Response, jsonify, render_template, request, redirect, 
 from wtforms import TextField, Form
 from  sqlalchemy.sql.expression import func, select
 import json
+import time
 
 from musicapp.database import db_session, Recs
 
@@ -32,13 +33,17 @@ def autocomplete():
     
 def get_recs():
     if len(cluster_inputs) < 1:
-        lim = 0
+        app.logger.debug("No selected songs")
+        results = [{"value": "No songs selected"}]
+        return results
+        #lim = 0
     else:
         lim = int(LIMIT/len(cluster_inputs))
     db_vals = []
     for c in cluster_inputs:
         db_vals += db_session.query(Recs).filter(Recs.cluster==c,
                    Recs.recommend==1).order_by(func.random()).limit(lim) #random selection for postgres
+    time.sleep(0.1)
     results = []
     for v in db_vals:
         results.append({"value": "%s, %s" %(v.artist, v.title), 
@@ -52,8 +57,11 @@ def add_entry():
     app.logger.debug(form_vals)
     cluster = form_vals.get('cluster')
     cluster_inputs.append(cluster)
-    results = get_recs()
-    app.logger.debug(results)
+    if len(cluster_inputs) > LIMIT:
+        results = [{"value": "Too many songs selected!"}]
+    else:
+        results = get_recs()
+        app.logger.debug(results)
     return Response(json.dumps(results))
     
 @app.route('/refresh_recs', methods=['GET', 'POST'])
@@ -70,5 +78,5 @@ def index():
  
     
 #if __name__ == '__main__':
-#    #port = int(os.environ.get("PORT", 5000))
-#    #app.run(host='0.0.0.0', port=port)
+#    port = int(os.environ.get("PORT", 5000))
+#    app.run(host='0.0.0.0', port=port)

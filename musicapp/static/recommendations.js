@@ -50,10 +50,14 @@ $(document).ready(function() {
             url: '../refresh_recs', //'{{ url_for("refresh_recs") }}',
             success: function (data) {
                 json_data = JSON.parse(data);
+                console.log(data)
                 recs = "Recommendations:<br> <ul>";
                 recs = box_content(json_data, recs);
                 $('#reccontent').html(recs);
             }
+            error: function (error) {
+                 console.log("error! "+error) 
+              }
         });
    });
 });
