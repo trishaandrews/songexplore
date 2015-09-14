@@ -54,9 +54,9 @@ $(document).ready(function() {
                 recs = "Recommendations:<br> <ul>";
                 recs = box_content(json_data, recs);
                 $('#reccontent').html(recs);
-            }
+            },
             error: function (error) {
-                 console.log("error! "+error) 
+                 console.log("error! "+error);
               }
         });
    });
