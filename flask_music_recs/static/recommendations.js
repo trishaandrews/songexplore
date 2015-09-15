@@ -1,7 +1,23 @@
 $(document).ready(function() {
     var selected_labels = [];
-    var selected_clusters = {"clusters":[]};
+    var selected_items = {"items":[], "page":0, "orderby":"track_id", "asc":"asc"};
     
+    function entry_ajax() {
+	    $.ajax({
+            url: './add_entry',
+            data: selected_items,
+	    type: 'POST',
+            success: function (data) {
+                json_data = JSON.parse(data);
+                recs = "Recommendations:<br> <ul>";
+                recs = box_content(json_data, recs);
+                $('#reccontent').html(recs);
+            },
+            error: function (error) {
+                console.log("error! "+error);
+            }
+        });
+	}
     function box_content(data_list, words){
         for(var i=0; i<data_list.length; i++){
             display_words = "";
@@ -29,41 +45,28 @@ $(document).ready(function() {
     });
     $("#autocomplete").on("autocompleteselect", function(event, ui) {
 	selected_labels.push(ui.item.value);
-	selected_clusters["clusters"].push(ui.item.cluster);
-	console.log(ui.item.cluster);
-	$.ajax({
-            url: './add_entry', //'{{ url_for("add_entry") }}',
-            data: selected_clusters,
-            type: 'POST',
-            success: function (data) {
-		json_data = JSON.parse(data);
-		recs = "Recommendations:<br> <ul>";
-		recs = box_content(json_data, recs);
-		$('#reccontent').html(recs);
-            },
-	    error: function (error) {
-                console.log("error! "+error);
-            }
-	});
+	selected_items["items"].push(ui.item);
+	selected_items["page"] = 0;
+	//console.log(ui.item.cluster, ui.item.cluster_new);
+	entry_ajax();
 	var output = "Chosen songs:<br> <ul>"
 	output = box_content(selected_labels, output);
 	$('#outputcontent').html(output);
 	$(this).val(''); return false; 
     });
-    $('#refresh').on('click', function (event) {
-        $.ajax({
-            url: './add_entry',
-            data: selected_clusters,
-	    type: 'POST',
-            success: function (data) {
-                json_data = JSON.parse(data);
-                recs = "Recommendations:<br> <ul>";
-                recs = box_content(json_data, recs);
-                $('#reccontent').html(recs);
-            },
-            error: function (error) {
-                console.log("error! "+error);
-            }
-        });
+    $('#more').on('click', function (event) {
+        selected_items["page"] += 1;
+        entry_ajax();
     });
+    $("input[name=orderby]:radio").change(function () {
+	    selected_items["orderby"] = this.value;
+	    selected_items["page"] = 0;
+	    entry_ajax();
+	});
+	$("input[name=ascdesc]:radio").change(function () {
+	    selected_items["asc"] = this.value;
+	    selected_items["page"] = 0;
+	    entry_ajax();
+	});
+	
 });
