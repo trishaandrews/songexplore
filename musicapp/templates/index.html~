@@ -22,7 +22,8 @@
 </div>
 </div>
 
-<footer style="font-size: 0.8em">
+<footer class="footer">
+  <br>
   <p><a href="{{ url_for('about') }}">
   About</a></p>
 </footer>

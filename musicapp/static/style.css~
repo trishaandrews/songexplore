@@ -6,6 +6,10 @@ h2              { font-size: 1.2em; }
 h3              { font-size: 1.0em; }
 li              { font-family: 'Lato', sans-serif; }
 
+h3 a:hover, h3 a:active {
+   font-weight: normal;
+}
+
 .box ul {
     list-style: none;
     text-align: left;
@@ -64,6 +68,10 @@ a:active {
     margin: auto;
 }
 
+.footer {
+    margin: 3em auto;
+    font-size: 0.8em;
+}
 /*#menu-container{
     margin: auto; 
     width: 70%;

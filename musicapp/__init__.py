@@ -36,14 +36,12 @@ def get_recs(cluster_inputs):
         app.logger.debug("No selected songs")
         results = [{"value": "No songs selected"}]
         return results
-        #lim = 0
     else:
         lim = int(LIMIT/len(cluster_inputs))
     db_vals = []
     for c in cluster_inputs:
         db_vals += db_session.query(Recs).filter(Recs.cluster==c,
                    Recs.recommend==1).order_by(func.random()).limit(lim) #random selection for postgres
-    #time.sleep(0.1)
     results = []
     for v in db_vals:
         results.append({"value": "%s, %s" %(v.artist, v.title), 
@@ -56,20 +54,13 @@ def add_entry():
     form_vals = request.form
     app.logger.debug(form_vals)
     clusters = form_vals.getlist('clusters[]')
-    #app.logger.debug(clusters)
     clusters = [int(c) for c in clusters]
-    app.logger.debug(clusters)
+    #app.logger.debug(clusters)
     if len(clusters) > LIMIT:
         results = [{"value": "Too many songs selected!"}]
     else:
         results = get_recs(clusters)
         app.logger.debug(results)
-    return Response(json.dumps(results))
-    
-@app.route('/refresh_recs', methods=['GET', 'POST'])
-def refresh_recs():
-    
-    results = get_recs()
     return Response(json.dumps(results))
     
 @app.route('/about')
@@ -78,8 +69,6 @@ def about():
     
 @app.route('/')
 def index():
-    #global cluster_inputs
-    #cluster_inputs = []
     form = SearchForm(request.form)
     return render_template('index.html', form=form)
  
