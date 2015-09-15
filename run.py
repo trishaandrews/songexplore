@@ -1,4 +1,4 @@
-from flask_music_recs import app
+from songexplore import app
 
 if __name__ == "__main__":
     #app.debug = True

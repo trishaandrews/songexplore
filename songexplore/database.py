@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker, relationship, backref
 
-from flask_music_recs.settings import params
+from songexplore.settings import params
 
 url = "postgresql://%s:%s@%s/%s" %params
 

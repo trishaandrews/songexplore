@@ -4,11 +4,12 @@ from  sqlalchemy.sql.expression import func, select
 import json
 import time
 
-from flask_music_recs.database import db_session, Recs
+from songexplore.database import db_session, Recs
 
 LIMIT = 10 #change html description p if you change this
 NUM_FIELDS = 5 #id, title, artist, cluster, new_cluster (fields from rec)
 NUM_PARAMS = 3 #page, orderby, asc, fields beyond those from recs
+
 app = Flask(__name__)
 
 #cluster_inputs = []
